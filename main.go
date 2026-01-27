@@ -93,8 +93,11 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// VULNERABLE: SQL Injection - menggunakan string concatenation langsung
-	query := fmt.Sprintf("SELECT id, username, email, role FROM users WHERE username='%s' AND password='%s'",
-		loginReq.Username, loginReq.Password)
+	query := fmt.Sprintf(`
+		SELECT id, username, email, role FROM users 
+		WHERE username='%s' AND password='%s'`,
+		loginReq.Username, loginReq.Password,
+	)
 
 	// Log query untuk debugging (menunjukkan vulnerability)
 	log.Printf("Executing query: %s", query)
